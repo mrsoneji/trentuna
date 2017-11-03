@@ -5,6 +5,8 @@ local myData = require( "mydata" )
 local utility = require( "utility" ) 
 local device = require( "device" )
 local uiSettings = require( "uiSettings" )
+local sonidos = require('sonidosSettings')
+audio.setVolume( 0.5, { channel=1 } )
 
 local params
 if device.isAndroid then
@@ -33,6 +35,7 @@ end
 
 local function goBack( event )
     if ( "ended" == event.phase ) then
+        local selectSound = audio.play(sonidos.effects.ui.menuBack)
         composer.gotoScene("menu", { effect = "crossFade", time = 333 })
     end
 end

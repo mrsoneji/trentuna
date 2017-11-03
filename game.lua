@@ -226,7 +226,7 @@ function scene:touch(event)
     elseif 'ended' == event.phase or 'cancelled' == event.phase then
         drawLine()
         gestureLogic(Gesture.GestureResult())
-        local attackSound = audio.play(sonidos.loader.heroe.attack1)
+        local attackSound = audio.play(sonidos.effects.heroe.attack1)
         local random0or1 = math.floor(math.random()*2)
         if random0or1 == 0 then
             hero.attack1Ani.alpha = 1
@@ -235,10 +235,10 @@ function scene:touch(event)
         end
         hero.hiddleAni.alpha = 0
         timer.performWithDelay( 500, function()
-                hero.attack1Ani.alpha = 0
-                hero.attack2Ani.alpha = 0
-                hero.hiddleAni.alpha = 1
-            end, 'attackTimer' )
+            hero.attack1Ani.alpha = 0
+            hero.attack2Ani.alpha = 0
+            hero.hiddleAni.alpha = 1
+        end, 'attackTimer' )
     end
 end
 
@@ -248,7 +248,7 @@ function scene:create( event )
     local actualLevelData = levelsSettings.levels[actualLevel]
     local actualWave = 1
     actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-    local backgroundMusic = audio.play(sonidos.loader.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    local backgroundMusic = audio.play(sonidos.themes.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
     local fondo = display.newImage(actualLevelData.fondo.imagen)
     fondo.y = actualLevelData.fondo.y
     fondo.x = display.contentCenterX
