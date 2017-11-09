@@ -9,7 +9,7 @@ local sonidos = require("sonidosSettings")
 local texto = require( "texto" )
 local bookSettings = require("bookSettings")
 local scene = composer.newScene()
-
+audio.setVolume( 0.5, { channel=1 } )
 local function goBack( event )
     if ( "ended" == event.phase ) then
         composer.removeScene("bookSheet")
@@ -20,9 +20,7 @@ end
 function scene:create( event )
     local sceneGroup = self.view
     local currentStiker = bookSettings.darkStickerList[event.params.darkSticker]
-
-    print(event.params.darkSticker)
-    local backgroundMusic = audio.play(sonidos.loader.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    local backgroundMusic = audio.play(sonidos.themes.stickerBookBackground, {loops = -1 , channel = sonidos.channels.background} )
     local libro = display.newImage("images/book/openbook.png", display.contentCenterX, display.contentCenterY)
     libro.width = display.contentWidth
     libro.height = display.contentHeight

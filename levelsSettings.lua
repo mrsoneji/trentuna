@@ -67,7 +67,7 @@ levelsSettings.levels = {
         fondo = levelsSettings.fondos[1],
         enemySecuences = {
             {--wave 1
-                10, 10,10,10,10,10, 9,9,9,9, 2, 3, 4, 5, 9,
+                1, 1, 1, 1, 1, 1,
                 7, 8, 9, 2, 8, 6,
                 3, 7, 2, 8, 9, 6,
                 2, 3, 4, 4, 7

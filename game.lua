@@ -15,7 +15,6 @@ local uiSettings = require( 'uiSettings')
 local scene = composer.newScene()
 local gameState = 'wave'
 local levelText             -- will be a display.newText() to let you know what level you're on
-local myText
 local pointsTable = {}
 local line
 local spawnTimer
@@ -226,7 +225,7 @@ function scene:touch(event)
     elseif 'ended' == event.phase or 'cancelled' == event.phase then
         drawLine()
         gestureLogic(Gesture.GestureResult())
-        local attackSound = audio.play(sonidos.loader.heroe.attack1)
+        local attackSound = audio.play(sonidos.effects.heroe.attack1)
         local random0or1 = math.floor(math.random()*2)
         if random0or1 == 0 then
             hero.attack1Ani.alpha = 1
@@ -235,10 +234,10 @@ function scene:touch(event)
         end
         hero.hiddleAni.alpha = 0
         timer.performWithDelay( 500, function()
-                hero.attack1Ani.alpha = 0
-                hero.attack2Ani.alpha = 0
-                hero.hiddleAni.alpha = 1
-            end, 'attackTimer' )
+            hero.attack1Ani.alpha = 0
+            hero.attack2Ani.alpha = 0
+            hero.hiddleAni.alpha = 1
+        end, 'attackTimer' )
     end
 end
 
@@ -248,7 +247,7 @@ function scene:create( event )
     local actualLevelData = levelsSettings.levels[actualLevel]
     local actualWave = 1
     actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-    local backgroundMusic = audio.play(sonidos.loader.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    local backgroundMusic = audio.play(sonidos.themes.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
     local fondo = display.newImage(actualLevelData.fondo.imagen)
     fondo.y = actualLevelData.fondo.y
     fondo.x = display.contentCenterX
@@ -260,17 +259,31 @@ function scene:create( event )
     hero = Hero.spawn()
     sceneGroup:insert(hero)
     spawnEnemies()
-    timer.performWithDelay( 3000, function() 
-        waveLabel.alpha = 0 
-        gameState = 'go'
-        actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-    end )
+    
+
+    levelLabel = display.newImage(uiSettings.getLevel(actualLevel))
+    levelLabel.x = display.contentCenterX
+    levelLabel.y = display.contentCenterY
+    levelLabel.alpha = 1
+    local levelLabelSound = audio.play(sonidos.effects.level.init)
+    sceneGroup:insert(levelLabel)
 
     waveLabel = animacion.crear(uiSettings.getWave(actualWave))
     waveLabel.x = display.contentCenterX
     waveLabel.y = display.contentCenterY
-    waveLabel.alpha = 1
+    waveLabel.alpha = 0
     sceneGroup:insert(waveLabel)
+    --hide level / show wave label
+    timer.performWithDelay( 3000, function() 
+        levelLabel.alpha = 0
+        waveLabel.alpha = 1
+    end )
+    --hide wave label start
+    timer.performWithDelay( 6000, function() 
+        waveLabel.alpha = 0 
+        gameState = 'go'
+        actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
+    end )
 
     local exitButton = display.newImage(uiSettings.exit)
     exitButton.x = display.contentWidth - 25

@@ -5,11 +5,14 @@ local utility = require( "utility" )
 local ads = require( "ads" )
 local uiSettings = require( "uiSettings" )
 local animacion = require( "animacion" )
+local sonidos = require('sonidosSettings')
 local myData = require( "mydata" )
 local params
+audio.setVolume( 0.5, { channel=1 } )
 
 local function PlayEvent( event )
     if ( "ended" == event.phase ) then
+        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
         composer.removeScene( "levelselect", false )
         composer.gotoScene("levelselect", { effect = "crossFade", time = 333 })
     end
@@ -17,12 +20,14 @@ end
 
 local function OptionsEvent( event )
     if ( "ended" == event.phase ) then
+        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
         composer.gotoScene("options", { effect = "crossFade", time = 333 })
     end
 end
 
 local function BookEvent( event )
     if ( "ended" == event.phase ) then
+        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
         composer.gotoScene("book", { effect = "crossFade", time = 333 })
     end
 end

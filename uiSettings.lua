@@ -163,6 +163,10 @@ ui.wave10 = {
 	start = 1
 }
 
+function ui.getLevel(n)
+	return ui.levelLabel[n]
+end
+
 function ui.getWave(n)
 	if n == 1 then 
 		return ui.wave1
