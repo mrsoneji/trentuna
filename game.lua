@@ -15,7 +15,6 @@ local uiSettings = require( 'uiSettings')
 local scene = composer.newScene()
 local gameState = 'wave'
 local levelText             -- will be a display.newText() to let you know what level you're on
-local myText
 local pointsTable = {}
 local line
 local spawnTimer
@@ -260,17 +259,31 @@ function scene:create( event )
     hero = Hero.spawn()
     sceneGroup:insert(hero)
     spawnEnemies()
-    timer.performWithDelay( 3000, function() 
-        waveLabel.alpha = 0 
-        gameState = 'go'
-        actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-    end )
+    
+
+    levelLabel = display.newImage(uiSettings.getLevel(actualLevel))
+    levelLabel.x = display.contentCenterX
+    levelLabel.y = display.contentCenterY
+    levelLabel.alpha = 1
+    local levelLabelSound = audio.play(sonidos.effects.level.init)
+    sceneGroup:insert(levelLabel)
 
     waveLabel = animacion.crear(uiSettings.getWave(actualWave))
     waveLabel.x = display.contentCenterX
     waveLabel.y = display.contentCenterY
-    waveLabel.alpha = 1
+    waveLabel.alpha = 0
     sceneGroup:insert(waveLabel)
+    --hide level / show wave label
+    timer.performWithDelay( 3000, function() 
+        levelLabel.alpha = 0
+        waveLabel.alpha = 1
+    end )
+    --hide wave label start
+    timer.performWithDelay( 6000, function() 
+        waveLabel.alpha = 0 
+        gameState = 'go'
+        actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
+    end )
 
     local exitButton = display.newImage(uiSettings.exit)
     exitButton.x = display.contentWidth - 25
