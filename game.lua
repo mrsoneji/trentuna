@@ -6,7 +6,7 @@ local timer =  require ('classTimerTag')
 local sonidos = require('sonidosSettings')
 require('hero')
 require('fondo')
-require('enemy')
+require('enemyManager')
 local ui = require('ui')
 local levelsSettings = require('levelsSettings')
 
@@ -17,7 +17,6 @@ local line
 local spawnTimer
 local sceneGroup
 local enemy
-local enemies
 
 local function exit( event )
     if ( 'ended' == event.phase ) then
@@ -29,18 +28,7 @@ end
 
 function gestureLogic(gestureLogic)
     gestureText.text = Gesture.GestureResult()        
-    for i = enemies.numChildren, 1, -1 do
-        currentEnemy = enemies[i]
-        if (currentEnemy ~= nil) then
-            if (currentEnemy.deathSequence[1] == gestureLogic) then
-                if (table.getn(currentEnemy.deathSequence) == 1) then
-                    currentEnemy.killed()
-                else
-                    enemies[i] = currentEnemy.hitted()
-                end
-            end
-        end
-    end
+    EnemyManager:handleEnemyLogic(gestureLogic)
 end
 
 function drawLine()
@@ -124,13 +112,11 @@ function scene:create( event )
 
     hero = Hero:new()
     sceneGroup:insert(hero)
-
-    enemies = display.newGroup()    
+  
     spawnTimer = timer.performWithDelay( 1000, function()
-        enemy = Enemy:new(actualLevelData, actualLevel, hero)
-        enemies:insert(enemy)
-        sceneGroup:insert(enemies)
+        EnemyManager:new(actualLevelData, actualLevel, hero)
     end, -1)
+    sceneGroup:insert(EnemyManager.enemies)
 
     hero:toFront()
     spawnTimer._delay = math.random(1000, 10000)
