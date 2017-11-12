@@ -79,6 +79,8 @@ local function onKeyEvent( event )
     if ( "back" == keyName and phase == "up" ) then
         if ( composer.getCurrentSceneName() == "menu" ) then
             native.requestExit()
+        elseif (composer.getCurrentSceneName() == "bookSheet") then
+            composer.gotoScene( "book", { effect="flip", time=300 } )
         else
             composer.gotoScene( "menu", { effect="crossFade", time=500 } )
         end
