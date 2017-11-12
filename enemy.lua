@@ -82,6 +82,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         yScale = 0.4
     end
     --spawn fuera de la pantalla
+    enemy.status = "alive"
     enemy:scale(xScale, yScale)
     enemy.x = xRandom
     enemy.y = yRandom
@@ -89,6 +90,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     enemy.initialY = yRandom
     --/ubicación y scala del enemigo
     enemy:insert(enemyImage, true)    
+    enemy.gestures = display.newGroup()
     for i=table.getn(enemyData.deathSequenceIcons), 1, -1 do
         local gestureIcon = display.newImage(enemyData.deathSequenceIcons[i])
         gestureIcon.x = -((20 * i) - 40)
@@ -98,7 +100,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         else
             gestureIcon:scale(-.5, .5)
         end
-        enemy:insert(gestureIcon)
+        enemy.gestures:insert(gestureIcon)
     end
     enemy.transitionParams = paramsAnimation
     enemy.transitionId = transition.to(enemy, paramsAnimation)
@@ -112,6 +114,12 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
             if (killedEffect ~= nil) then
                 killedEffect:removeSelf()
                 enemy:removeSelf() 
+
+                for j = enemy.gestures.numChildren, 1, -1 do
+                    enemy.gestures[j]:removeSelf()
+                end
+
+                enemy.status = "killed"
             end
         end )
     end
