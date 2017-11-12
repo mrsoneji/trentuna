@@ -107,7 +107,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         killedEffect = animacion.crear(enemysSettings.killedAnimation)
         killedEffect:scale(.5, .5)
         enemy:insert(killedEffect, true)
-        timer.performWithDelay( 1000, function() 
+        timer.performWithDelay( 500, function() 
             transition.cancel(enemy.transitionId)
             if (killedEffect ~= nil) then
                 killedEffect:removeSelf()
