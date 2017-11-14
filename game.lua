@@ -63,6 +63,11 @@ function drawLine()
 end
 
 function scene:touch(event)
+    -- correct RuntimeEventDispatcher CoronaSDK's bug
+    if (composer.getCurrentSceneName() ~= "game") then
+        return
+    end 
+    
     if 'began' == event.phase then
         pointsTable = nil
         pointsTable = {}
