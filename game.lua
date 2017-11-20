@@ -1,6 +1,5 @@
 local composer = require( 'composer' )
 local Gesture = require('lib_gesture')
-local myData = require( 'mydata' )
 local math = require( 'math' )
 local timer =  require ('classTimerTag')
 local sonidos = require('sonidosSettings')
