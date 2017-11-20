@@ -1,12 +1,9 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
-local widget = require( "widget" )
 local utility = require( "utility" )
-local ads = require( "ads" )
 local uiSettings = require( "uiSettings" )
 local animacion = require( "animacion" )
 local sonidos = require('sonidosSettings')
-local myData = require( "mydata" )
 local params
 audio.setVolume( 0.5, { channel=1 } )
 

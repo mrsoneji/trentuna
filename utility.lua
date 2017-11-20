@@ -112,6 +112,11 @@ function M.makeTimeStamp(dateString)
     return convertedTimestamp + offset
 end
 
+function M.getData()
+print('GETTTT DATAAAAA')
+    return M.loadTable('settings.json')
+end
+
 function string:trim()
   return (self:gsub("^%s*(.-)%s*$", "%1"))
 end
