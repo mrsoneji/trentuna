@@ -1,24 +1,24 @@
-local composer = require( "composer" )
-local widget = require( "widget" )
-local ads = require( "ads" )
-local store = require( "store" )
-local gameNetwork = require("gameNetwork")
-local utility = require( "utility" )
-local device = require( "device" )
+local composer = require( 'composer' )
+local widget = require( 'widget' )
+local ads = require( 'ads' )
+local store = require( 'store' )
+local gameNetwork = require('gameNetwork')
+local utility = require( 'utility' )
+local device = require( 'device' )
 
 display.setStatusBar( display.HiddenStatusBar )
 
 math.randomseed( os.time() )
 
 if device.isAndroid then
-	widget.setTheme( "widget_theme_android_holo_light" )
-    store = require("plugin.google.iap.v3")
+	widget.setTheme( 'widget_theme_android_holo_light' )
+    store = require('plugin.google.iap.v3')
 end
 
 --
 -- Load saved in settings
 --
-local myData = utility.loadTable("settings.json")
+local myData = utility.loadTable('settings.json')
 if myData == nil then
 	myData = {
         settings = {
@@ -26,7 +26,7 @@ if myData == nil then
             musicOn = true
         }
     }
-	utility.saveTable(myData, "settings.json")
+	utility.saveTable(myData, 'settings.json')
     print('GUARDA')
 end
 
@@ -59,7 +59,7 @@ end
 -- Load your global sounds here
 -- Load scene specific sounds in the scene
 --
--- myData.splatSound = audio.load("audio/splat.wav")
+-- myData.splatSound = audio.load('audio/splat.wav')
 --
 
 --
@@ -71,13 +71,13 @@ local function onKeyEvent( event )
     local keyName = event.keyName
     print( event.phase, event.keyName )
 
-    if ( "back" == keyName and phase == "up" ) then
-        if ( composer.getCurrentSceneName() == "menu" ) then
+    if ( 'back' == keyName and phase == 'up' ) then
+        if ( composer.getSceneName('current') == 'menu' ) then
             native.requestExit()
-        elseif (composer.getCurrentSceneName() == "bookSheet") then
-            composer.gotoScene( "book", { effect="flip", time=300 } )
+        elseif (composer.getSceneName('current') == 'bookSheet') then
+            composer.gotoScene( 'book', { effect='flip', time=300 } )
         else
-            composer.gotoScene( "menu", { effect="crossFade", time=500 } )
+            composer.gotoScene( 'menu', { effect='crossFade', time=500 } )
         end
         return true
     end
@@ -86,31 +86,31 @@ end
 
 --add the key callback
 if device.isAndroid then
-    Runtime:addEventListener( "key", onKeyEvent )
+    Runtime:addEventListener( 'key', onKeyEvent )
 end
 
 --
 -- handle system events
 --
 local function systemEvents(event)
-    print("systemEvent " .. event.type)
-    if event.type == "applicationSuspend" then
-        utility.saveTable( myData.settings, "settings.json" )
-    elseif event.type == "applicationResume" then
+    print('systemEvent ' .. event.type)
+    if event.type == 'applicationSuspend' then
+        utility.saveTable( myData.settings, 'settings.json' )
+    elseif event.type == 'applicationResume' then
         -- 
         -- login to gameNetwork code here
         --
-    elseif event.type == "applicationExit" then
-        utility.saveTable( myData.settings, "settings.json" )
-    elseif event.type == "applicationStart" then
+    elseif event.type == 'applicationExit' then
+        utility.saveTable( myData.settings, 'settings.json' )
+    elseif event.type == 'applicationStart' then
         --
         -- Login to gameNetwork code here
         --
         --
         -- Go to the menu
         --
-        composer.gotoScene( "menu", { time = 250, effect = "fade" } )
+        composer.gotoScene( 'menu', { time = 250, effect = 'fade' } )
     end
     return true
 end
-Runtime:addEventListener("system", systemEvents)
+Runtime:addEventListener('system', systemEvents)
