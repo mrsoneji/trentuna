@@ -4,7 +4,6 @@ local scene = composer.newScene()
 local widget = require( "widget" )
 local json = require( "json" )
 local utility = require( "utility" )
-local myData = require( "mydata" )
 local gameNetwork = require( "gameNetwork" )
 local device = require( "device" )
 

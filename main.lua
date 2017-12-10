@@ -4,7 +4,6 @@ local ads = require( "ads" )
 local store = require( "store" )
 local gameNetwork = require("gameNetwork")
 local utility = require( "utility" )
-local myData = require( "mydata" )
 local device = require( "device" )
 
 display.setStatusBar( display.HiddenStatusBar )
@@ -19,20 +18,16 @@ end
 --
 -- Load saved in settings
 --
-myData.settings = utility.loadTable("settings.json")
-if myData.settings == nil then
-	myData.settings = {}
-	myData.settings.soundOn = true
-	myData.settings.musicOn = true
-    myData.settings.isPaid = false
-	myData.settings.currentLevel = 1
-	myData.settings.unlockedLevels = 20
-    myData.settings.bestScore = 0
-	myData.settings.levels = {}
-	utility.saveTable(myData.settings, "settings.json")
-end
-if myData.settings.bestScore == nil then
-    myData.settings.bestScore = 0
+local myData = utility.loadTable("settings.json")
+if myData == nil then
+	myData = {
+        settings = {
+            effectsOn = true,
+            musicOn = true
+        }
+    }
+	utility.saveTable(myData, "settings.json")
+    print('GUARDA')
 end
 
 --
