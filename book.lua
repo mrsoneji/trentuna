@@ -12,7 +12,7 @@ audio.setVolume( 0.5, { channel=1 } )
 local function goBack( event )
     if ( "ended" == event.phase ) then
         audio.stop(sonidos.channels.background)
-        local selectSound = audio.play(sonidos.effects.ui.menuBack)
+        audio.play(sonidos.effects.ui.menuBack)
         composer.removeScene( "book" )
         composer.gotoScene("menu", { effect = "crossFade", time = 333 })
     end
@@ -20,7 +20,9 @@ end
 
 function scene:create( event )
     local sceneGroup = self.view
-    local backgroundMusic = audio.play(sonidos.themes.stickerBookBackground, {loops = -1 , channel = sonidos.channels.background} )
+
+    audio.play(sonidos.themes.stickerBook, {loops = -1 , channel = sonidos.channels.background} )
+
     local libro = display.newImage("images/book/openbook.png", display.contentCenterX, display.contentCenterY)
     libro.width = display.contentWidth
     libro.height = display.contentHeight

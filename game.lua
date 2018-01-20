@@ -84,7 +84,7 @@ function scene:touch(event)
     elseif 'ended' == event.phase or 'cancelled' == event.phase then
         drawLine()
         gestureLogic(Gesture.GestureResult())
-        local attackSound = audio.play(sonidos.effects.heroe.attack1)
+        audio.play(sonidos.effects.heroe.attack1)
         local random0or1 = math.floor(math.random()*2)
         if random0or1 == 0 then
             hero.attack1Ani.alpha = 1
@@ -105,7 +105,8 @@ function scene:create( event )
     local actualLevel = event.params.levelToPlay
     local actualLevelData = levelsSettings.levels[actualLevel]
     local actualWave = 1
-    local backgroundMusic = audio.play(sonidos.themes.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    audio.play(sonidos.themes.level[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    audio.setVolume( 0.5, { channel = sonidos.channels.background } )
 
     fondo = Fondo:new(actualLevelData)
     sceneGroup:insert(fondo)

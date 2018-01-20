@@ -19,7 +19,6 @@ end
 function scene:create( event )
     local sceneGroup = self.view
     local currentStiker = bookSettings.darkStickerList[event.params.darkSticker]
-    local backgroundMusic = audio.play(sonidos.themes.stickerBookBackground, {loops = -1 , channel = sonidos.channels.background} )
     local libro = display.newImage("images/book/openbook.png", display.contentCenterX, display.contentCenterY)
     libro.width = display.contentWidth
     libro.height = display.contentHeight
@@ -29,7 +28,7 @@ function scene:create( event )
     local titulo = texto.write(currentStiker.titulo, 180, 50, 300, 35, "darkred")
     sceneGroup:insert(titulo)
 
-    local descripcion = texto.write(currentStiker.descripcion, 150, 120, 200, 15, "black")
+    local descripcion = texto.write(currentStiker.descripcion, 150, 150, 200, 15, "black")
     sceneGroup:insert(descripcion)
 
     local ilustracion = display.newImage(currentStiker.imagenGrande, display.contentCenterX + 130, display.contentCenterY - 10)

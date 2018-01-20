@@ -8,7 +8,7 @@ Ui.levelLabel = function(actualLevel)
     levelLabel.x = display.contentCenterX
     levelLabel.y = display.contentCenterY
     levelLabel.alpha = 1
-    levelLabelSound = audio.play(sonidos.effects.level.init)
+    audio.play(sonidos.effects.level.init)
     return levelLabel
 end
 
