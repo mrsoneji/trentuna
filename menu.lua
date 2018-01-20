@@ -5,11 +5,12 @@ local uiSettings = require( "uiSettings" )
 local animacion = require( "animacion" )
 local sonidos = require('sonidosSettings')
 local params
-audio.setVolume(0.5)
+audio.setVolume(0.2)
 
 local function PlayEvent( event )
     if ( "ended" == event.phase ) then
-        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
+        audio.play(sonidos.effects.ui.menuSelect)
+        audio.stop(sonidos.channels.background)
         composer.removeScene( "levelselect", false )
         composer.gotoScene("levelselect", { effect = "crossFade", time = 333 })
     end
@@ -17,20 +18,25 @@ end
 
 local function OptionsEvent( event )
     if ( "ended" == event.phase ) then
-        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
+        audio.play(sonidos.effects.ui.menuSelect)
+        audio.stop(sonidos.channels.background)
         composer.gotoScene("options", { effect = "crossFade", time = 333 })
     end
 end
 
 local function BookEvent( event )
     if ( "ended" == event.phase ) then
-        local selectSound = audio.play(sonidos.effects.ui.menuSelect)
+        audio.play(sonidos.effects.ui.menuSelect)
+        audio.stop(sonidos.channels.background)
         composer.gotoScene("book", { effect = "crossFade", time = 333 })
     end
 end
 
 function scene:create( event )
     local sceneGroup = self.view
+
+    audio.play(sonidos.themes.menu, {loops = -1 , channel = sonidos.channels.background} )
+
 
     params = event.params
 

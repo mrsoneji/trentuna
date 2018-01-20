@@ -27,7 +27,6 @@ if myData == nil then
         }
     }
 	utility.saveTable(myData, 'settings.json')
-    print('GUARDA')
 end
 
 --
@@ -69,7 +68,6 @@ local function onKeyEvent( event )
 
     local phase = event.phase
     local keyName = event.keyName
-    print( event.phase, event.keyName )
 
     if ( 'back' == keyName and phase == 'up' ) then
         if ( composer.getSceneName('current') == 'menu' ) then
@@ -93,7 +91,6 @@ end
 -- handle system events
 --
 local function systemEvents(event)
-    print('systemEvent ' .. event.type)
     if event.type == 'applicationSuspend' then
         utility.saveTable( myData.settings, 'settings.json' )
     elseif event.type == 'applicationResume' then

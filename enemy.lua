@@ -1,6 +1,7 @@
 Enemy = {}
 --Enemy.__index = Enemy
 local enemysSettings = require('enemysSettings')
+local sonidos = require('sonidosSettings')
 local animacion = require('animacion')
 local widget = require('widget')
 local actualEnemyInSecuence = 0
@@ -104,10 +105,14 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     end
     enemy.transitionParams = paramsAnimation
     enemy.transitionId = transition.to(enemy, paramsAnimation)
+    if (enemyData.code) then
+        audio.play(sonidos.effects.enemys[enemyData.code].spawn, { channel = sonidos.channels.enemys })
+    end
 
     enemy.killed = function()
         killedEffect = animacion.crear(enemysSettings.killedAnimation)
         killedEffect:scale(.5, .5)
+        audio.play(sonidos.effects.enemys[enemyData.code].dead, { channel = sonidos.channels.enemys })
         enemy:insert(killedEffect, true)
         timer.performWithDelay( 500, function() 
             transition.cancel(enemy.transitionId)
