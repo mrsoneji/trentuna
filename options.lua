@@ -8,28 +8,22 @@ local sonidos = require('sonidosSettings')
 audio.setVolume( 0.5, { channel=1 } )
 
 local params
-local myData = {}
-myData.settings = utility.getData()
-print('ENTRANDO ----- ')
-print(myData.settings.effectsOn)
+local myData = utility.loadSettings()
+
 if device.isAndroid then
     widget.setTheme( 'widget_theme_android_holo_dark' )
 end
 
 local function onEffectsSwitchPress(event)
-    myData.settings = utility.getData()
-    print(myData.settings.effectsOn)
     local switch = event.target
     myData.settings.effectsOn = switch.isOn
-    print('effects!!!!!!!!!!!!')
-    utility.saveTable(myData.settings, 'settings.json')
+    utility.saveSettings(myData)
 end
 
 local function onMusicSwitchPress(event)
-    myData.settings = utility.getData()
     local switch = event.target
     myData.settings.musicOn = switch.isOn
-    utility.saveTable(myData.settings, 'settings.json')
+    utility.saveSettings(myData)
 end
 
 local function goBack( event )
@@ -63,7 +57,7 @@ local effectsOnOffSwitch = widget.newSwitch({
     style = 'onOff',
     id = 'effectsOnOffSwitch',
     initialSwitchState = myData.settings.effectsOn,
-    onPress = onEffectsSwitchPress
+    onRelease = onEffectsSwitchPress
 })
 effectsOnOffSwitch.x = display.contentCenterX + 100
 effectsOnOffSwitch.y = effectsLabel.y
@@ -72,7 +66,7 @@ local musicOnOffSwitch = widget.newSwitch({
     style = 'onOff',
     id = 'musicOnOffSwitch',
     initialSwitchState = myData.settings.musicOn,
-    onPress = onMusicSwitchPress
+    onRelease = onMusicSwitchPress
 })
 musicOnOffSwitch.x = display.contentCenterX + 100
 musicOnOffSwitch.y = musicLabel.y

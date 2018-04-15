@@ -18,16 +18,16 @@ end
 --
 -- Load saved in settings
 --
-local myData = {}
-myData.settings = utility.loadTable("settings.json")
-if myData.settings == nil then
-    print('NO HAY JSON')
-	myData.settings = {}
-	myData.settings.effectsOn = true
-	myData.settings.musicOn = true
-	utility.saveTable(myData.settings, "settings.json")
-else
-    print('JSON PRESENTE')
+local myData = utility.loadTable("settings.json")
+if myData == nil then
+	myData = {
+        settings = {
+            effectsOn = true,
+            musicOn = true
+        }
+    }
+	utility.saveTable(myData, "settings.json")
+    print('GUARDA')
 end
 
 --

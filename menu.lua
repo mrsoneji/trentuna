@@ -5,7 +5,7 @@ local uiSettings = require( "uiSettings" )
 local animacion = require( "animacion" )
 local sonidos = require('sonidosSettings')
 local params
-audio.setVolume( 0.5, { channel=1 } )
+audio.setVolume(0.5)
 
 local function PlayEvent( event )
     if ( "ended" == event.phase ) then
