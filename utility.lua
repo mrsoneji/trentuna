@@ -109,7 +109,6 @@ function M.makeTimeStamp(dateString)
 end
 
 function M.getData()
-print('GETTTT DATAAAAA')
     return M.loadTable('settings.json')
 end
 
