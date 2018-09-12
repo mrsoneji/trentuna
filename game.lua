@@ -63,7 +63,7 @@ end
 
 function scene:touch(event)
     -- correct RuntimeEventDispatcher CoronaSDK's bug
-    if (composer.getCurrentSceneName() ~= "game") then
+    if (composer.getSceneName("current") ~= "game") then
         return
     end 
     

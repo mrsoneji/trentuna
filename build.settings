@@ -25,7 +25,6 @@ settings =
         {
             -- required
             publisherId = "com.coronalabs",
-            supportedPlatforms = { android = true },
         },
         -- key is the name passed to Lua's 'require()'
         ["CoronaProvider.native.popup.social"] =

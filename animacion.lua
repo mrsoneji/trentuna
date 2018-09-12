@@ -17,6 +17,8 @@ function animacion.crear(aniObjeto)
         loopDirection = aniObjeto.loopDirection 
     }}
     local animado = display.newSprite(sprite, settings)
+    animado.fill.effect = "filter.sepia"
+    animado.fill.effect.intensity = 0.8
     animado:play()
     return animado
 end
