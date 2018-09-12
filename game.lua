@@ -21,7 +21,10 @@ local enemies
 
 local function exit( event )
     if ( 'ended' == event.phase ) then
-        audio.stop(sonidos.channels.background)
+        Runtime:removeEventListener( 'touch' , scene )
+
+        audio.fade( { channel=0, time=1000, volume=0.0 } )
+
         composer.removeScene( 'game' )
         composer.gotoScene( 'menu', { effect = 'crossFade', time = 333 } )
     end
