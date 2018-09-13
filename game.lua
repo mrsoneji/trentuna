@@ -172,10 +172,21 @@ function scene:hide( event )
     end
 end
 
+function scene:enterFrame( event )
+    local sceneGroup = self.view
+    for i = enemies.numChildren, 1, -1 do
+        currentEnemy = enemies[i]
+        if (currentEnemy ~= nil) then
+            currentEnemy.enterFrame()
+        end
+    end
+end
+
 function scene:destroy( event )
     local sceneGroup = self.view
 end
 
+Runtime:addEventListener( "enterFrame", scene )
 Runtime:addEventListener( 'touch' , scene )
 scene:addEventListener( 'create', scene )
 scene:addEventListener( 'show', scene )

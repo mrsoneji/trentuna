@@ -42,7 +42,8 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     local enemyImage = animacion.crear(enemyAniData)
     enemyImage.x = display.contentWidth / 2
     enemyImage.y = 30
-    local enemy = display.newContainer( enemysSettings.killedAnimation.width, enemysSettings.killedAnimation.height + 50 )
+    local enemy = display.newContainer( enemysSettings.killedAnimation.width, enemysSettings.killedAnimation.height )
+    enemy.gestureIcons = {}
     ----
     enemy.deathSequence = table.deepCopy(enemyData.deathSequence)
     --ubicación y scala del enemigo/
@@ -98,7 +99,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         else
             gestureIcon:scale(-.5, .5)
         end
-        enemy:insert(gestureIcon)
+        table.insert(enemy.gestureIcons, gestureIcon)
     end
     enemy.transitionParams = paramsAnimation
     enemy.transitionId = transition.to(enemy, paramsAnimation)
@@ -111,6 +112,12 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
             transition.cancel(enemy.transitionId)
             if (killedEffect ~= nil) then
                 killedEffect:removeSelf()
+                for i = table.getn(enemy.gestureIcons), 1, -1 do
+                    currentGesture = enemy.gestureIcons[i]
+                    if (currentGesture ~= nil) then
+                        currentGesture:removeSelf()
+                    end
+                end
                 enemy:removeSelf() 
             end
         end )
@@ -123,6 +130,16 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         enemy.y = enemy.y - 125 * math.sin(angle)
         enemy.transitionId = transition.to(enemy, enemy.transitionParams)
         table.remove(enemy.deathSequence, 1)
+    end
+
+    enemy.enterFrame = function ()
+        for i = table.getn(enemy.gestureIcons), 1, -1 do
+            currentGesture = enemy.gestureIcons[i]
+            if (currentGesture ~= nil) then
+                currentGesture.x = enemy.x - (25 * (i - 1))
+                currentGesture.y = enemy.y + 75
+            end
+        end
     end
 
     return enemy
