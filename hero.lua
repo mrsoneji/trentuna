@@ -3,6 +3,7 @@ Hero = {}
 local heroSettings = require('heroSettings')
 local animacion = require( 'animacion' )
 local widget = require( 'widget' )
+local sonidos = require('sonidosSettings')
 
 function Hero:new()
     local maxSizeHeroImage = display.newImage(heroSettings.attack.imagen[2])
@@ -49,8 +50,13 @@ function Hero:new()
 
     hero.hurt = function(obj)
         if (obj ~= nil) then
+            local random0or1 = math.floor(math.random()*2)
+            if random0or1 == 0 then
+                audio.play(sonidos.effects.heroe.hurt1)
+            else
+                audio.play(sonidos.effects.heroe.hurt2)
+            end
             hero.health = hero.health - 1
-            print(hero.health)
             hero.energyBarActive:setProgress( 1 / 10 * hero.health )
             hero.damageAni.alpha = 1
             hero.hiddleAni.alpha = 0

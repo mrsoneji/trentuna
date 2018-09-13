@@ -54,12 +54,8 @@ end
 function M.saveTable(t, filename)
     local path = system.pathForFile( filename, system.DocumentsDirectory)
     local file = io.open(path, "w")
-    --print("in saveTable.  I think my table is....")
-    --M.print_r(t)
     if file then
         local contents = json.encode(t)
-        --print("json data is")
-        --print("*" .. contents .. "*")
         file:write( contents )
         io.close( file )
         return true
@@ -121,8 +117,7 @@ function string:split( inSplitPattern, outResults )
     outResults = { }
   end
   local theStart = 1
-  local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, 
-theStart )
+  local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
   while theSplitStart do
     table.insert( outResults, string.sub( self, theStart, theSplitStart-1 ) )
     theStart = theSplitEnd + 1
@@ -131,5 +126,14 @@ theStart )
   table.insert( outResults, string.sub( self, theStart ) )
   return outResults
 end
+
+function M.loadSettings()
+    return M.loadTable("settings.json")
+end
+
+function M.saveSettings(myData)
+    M.saveTable(myData, "settings.json")
+end
+
 
 return M

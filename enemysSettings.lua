@@ -7,7 +7,7 @@ enemysSettings.killedAnimation = {
     width = 106,
     height = 100,
     numFrames = 24,
-    time = 1000,
+    time = 350,
     loopDirection = "forward",
     loopCount = 1,
     start = 1
@@ -16,7 +16,7 @@ enemysSettings.killedAnimation = {
 enemysSettings.list = {
     {
         nombre = "Zombie",
-        sprite = "",
+        code = "zombie",
         deathSequence = {"HACIAABAJO"},
         deathSequenceIcons = {"images/gestos/HACIAABAJO.png"},
         speed = 10000,
@@ -36,7 +36,7 @@ enemysSettings.list = {
     },
     {
         nombre = "White Skelenton",
-        sprite = "",
+        code = "whiteSkeleton",
         deathSequence = {"CDESDEARRIBA"},
         deathSequenceIcons = {"images/gestos/CDESDEARRIBA.png"},
         speed = 10000,
@@ -56,7 +56,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Roman Soldier",
-        sprite = "",
+        code = "romanSoldier",
         deathSequence = {"HACIAABAJO"},
         deathSequenceIcons = {"images/gestos/HACIAABAJO.png"},
         speed = 10000,
@@ -76,7 +76,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Black Skelenton",
-        sprite = "",        
+        code = "blackSkeleton",
         deathSequence = {"N"},
         deathSequenceIcons = {"images/gestos/N.png"},
         speed = 10000,
@@ -96,7 +96,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Orange Dragon",
-        sprite = "",        
+        code = "orangeDragon",
         deathSequence = {"HACIAIZQUIERDA"},
         deathSequenceIcons = {"images/gestos/HACIAIZQUIERDA.png"},
         speed = 10000,
@@ -116,7 +116,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Green Wizard",
-        sprite = "",        
+        code = "greenWizard",
         deathSequence = {"S"},
         deathSequenceIcons = {"images/gestos/S.png"},
         speed = 10000,
@@ -136,7 +136,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Lamberto",
-        sprite = "",        
+        code = "lamberto",
         deathSequence = {"HACIADERECHA"},
         deathSequenceIcons = {"images/gestos/HACIADERECHA.png"},
         speed = 10000,
@@ -156,7 +156,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Harpia",
-        sprite = "",        
+        code = "harpia",
         deathSequence = {"HACIADERECHA"},
         deathSequenceIcons = {"images/gestos/HACIADERECHA.png"},
         speed = 10000,
@@ -176,7 +176,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Cascanueces",
-        sprite = "",        
+        code = "cascanueces",
         deathSequence = {"HACIADERECHA"},
         deathSequenceIcons = {"images/gestos/HACIADERECHA.png"},
         speed = 10000,
@@ -196,7 +196,7 @@ enemysSettings.list = {
     },
     {
         nombre = "Lobizon",
-        sprite = "",        
+        code = "lobizon",
         deathSequence = {"HACIADERECHA"},
         deathSequenceIcons = {"images/gestos/HACIADERECHA.png"},
         speed = 10000,
@@ -215,7 +215,6 @@ enemysSettings.list = {
         }
     }
 }
-
 
 enemysSettings.bosses = {
     {
@@ -239,6 +238,5 @@ enemysSettings.bosses = {
         }
     }
 }
-
 
 return enemysSettings

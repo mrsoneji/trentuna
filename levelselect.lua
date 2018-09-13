@@ -3,7 +3,6 @@ local scene = composer.newScene()
 local levelsSettings = require("levelsSettings")
 local widget = require( "widget" )
 local utility = require( "utility" )
-local myData = require( "mydata" )
 
 local params
 

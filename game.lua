@@ -1,12 +1,11 @@
 local composer = require( 'composer' )
 local Gesture = require('lib_gesture')
-local myData = require( 'mydata' )
 local math = require( 'math' )
 local timer =  require ('classTimerTag')
 local sonidos = require('sonidosSettings')
 require('hero')
 require('fondo')
-require('enemy')
+require('enemyManager')
 local ui = require('ui')
 local levelsSettings = require('levelsSettings')
 
@@ -17,11 +16,11 @@ local line
 local spawnTimer
 local sceneGroup
 local enemy
-local enemies
 
 local function exit( event )
     if ( 'ended' == event.phase ) then
         audio.stop(sonidos.channels.background)
+        
         composer.removeScene( 'game' )
         composer.gotoScene( 'menu', { effect = 'crossFade', time = 333 } )
     end
@@ -29,18 +28,7 @@ end
 
 function gestureLogic(gestureLogic)
     gestureText.text = Gesture.GestureResult()        
-    for i = enemies.numChildren, 1, -1 do
-        currentEnemy = enemies[i]
-        if (currentEnemy ~= nil) then
-            if (currentEnemy.deathSequence[1] == gestureLogic) then
-                if (table.getn(currentEnemy.deathSequence) == 1) then
-                    currentEnemy.killed()
-                else
-                    enemies[i] = currentEnemy.hitted()
-                end
-            end
-        end
-    end
+    EnemyManager:handleEnemyLogic(gestureLogic)
 end
 
 function drawLine()
@@ -75,6 +63,11 @@ function drawLine()
 end
 
 function scene:touch(event)
+    -- correct RuntimeEventDispatcher CoronaSDK's bug
+    if (composer.getSceneName('current') ~= "game") then
+        return
+    end 
+    
     if 'began' == event.phase then
         pointsTable = nil
         pointsTable = {}
@@ -92,7 +85,7 @@ function scene:touch(event)
     elseif 'ended' == event.phase or 'cancelled' == event.phase then
         drawLine()
         gestureLogic(Gesture.GestureResult())
-        local attackSound = audio.play(sonidos.effects.heroe.attack1)
+        audio.play(sonidos.effects.heroe.attack1)
         local random0or1 = math.floor(math.random()*2)
         if random0or1 == 0 then
             hero.attack1Ani.alpha = 1
@@ -113,7 +106,8 @@ function scene:create( event )
     local actualLevel = event.params.levelToPlay
     local actualLevelData = levelsSettings.levels[actualLevel]
     local actualWave = 1
-    local backgroundMusic = audio.play(sonidos.themes.levelBackground[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    audio.play(sonidos.themes.level[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
+    audio.setVolume( 0.5, { channel = sonidos.channels.background } )
 
     fondo = Fondo:new(actualLevelData)
     sceneGroup:insert(fondo)
@@ -124,13 +118,11 @@ function scene:create( event )
 
     hero = Hero:new()
     sceneGroup:insert(hero)
-
-    enemies = display.newGroup()    
+  
     spawnTimer = timer.performWithDelay( 1000, function()
-        enemy = Enemy:new(actualLevelData, actualLevel, hero)
-        enemies:insert(enemy)
-        sceneGroup:insert(enemies)
+        EnemyManager:new(actualLevelData, actualLevel, hero)
     end, -1)
+    sceneGroup:insert(EnemyManager.enemies)
 
     hero:toFront()
     spawnTimer._delay = math.random(1000, 10000)
@@ -172,21 +164,10 @@ function scene:hide( event )
     end
 end
 
-function scene:enterFrame( event )
-    local sceneGroup = self.view
-    for i = enemies.numChildren, 1, -1 do
-        currentEnemy = enemies[i]
-        if (currentEnemy ~= nil) then
-            currentEnemy.enterFrame()
-        end
-    end
-end
-
 function scene:destroy( event )
     local sceneGroup = self.view
 end
 
-Runtime:addEventListener( "enterFrame", scene )
 Runtime:addEventListener( 'touch' , scene )
 scene:addEventListener( 'create', scene )
 scene:addEventListener( 'show', scene )

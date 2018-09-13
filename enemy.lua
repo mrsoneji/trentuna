@@ -1,6 +1,7 @@
 Enemy = {}
 --Enemy.__index = Enemy
 local enemysSettings = require('enemysSettings')
+local sonidos = require('sonidosSettings')
 local animacion = require('animacion')
 local widget = require('widget')
 local actualEnemyInSecuence = 0
@@ -83,6 +84,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         yScale = 0.4
     end
     --spawn fuera de la pantalla
+    enemy.status = "alive"
     enemy:scale(xScale, yScale)
     enemy.x = xRandom
     enemy.y = yRandom
@@ -90,6 +92,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     enemy.initialY = yRandom
     --/ubicación y scala del enemigo
     enemy:insert(enemyImage, true)    
+    enemy.gestures = display.newGroup()
     for i=table.getn(enemyData.deathSequenceIcons), 1, -1 do
         local gestureIcon = display.newImage(enemyData.deathSequenceIcons[i])
         gestureIcon.x = -((20 * i) - 40)
@@ -103,12 +106,16 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     end
     enemy.transitionParams = paramsAnimation
     enemy.transitionId = transition.to(enemy, paramsAnimation)
+    if (enemyData.code) then
+        audio.play(sonidos.effects.enemys[enemyData.code].spawn, { channel = sonidos.channels.enemys })
+    end
 
     enemy.killed = function()
         killedEffect = animacion.crear(enemysSettings.killedAnimation)
         killedEffect:scale(.5, .5)
+        audio.play(sonidos.effects.enemys[enemyData.code].dead, { channel = sonidos.channels.enemys })
         enemy:insert(killedEffect, true)
-        timer.performWithDelay( 1000, function() 
+        timer.performWithDelay( 500, function() 
             transition.cancel(enemy.transitionId)
             if (killedEffect ~= nil) then
                 killedEffect:removeSelf()
@@ -119,6 +126,12 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
                     end
                 end
                 enemy:removeSelf() 
+
+                for j = enemy.gestures.numChildren, 1, -1 do
+                    enemy.gestures[j]:removeSelf()
+                end
+
+                enemy.status = "killed"
             end
         end )
     end
@@ -137,7 +150,7 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
             currentGesture = enemy.gestureIcons[i]
             if (currentGesture ~= nil) then
                 currentGesture.x = enemy.x - (25 * (i - 1))
-                currentGesture.y = enemy.y + 75
+                currentGesture.y = enemy.y - 65
             end
         end
     end

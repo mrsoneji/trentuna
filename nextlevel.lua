@@ -2,7 +2,6 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 local widget = require( "widget" )
-local myData = require( "mydata" )
 local utility = require( "utility" )
  
 local nextLevelText
