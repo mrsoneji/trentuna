@@ -18,11 +18,9 @@ local sceneGroup
 local enemy
 
 local function exit( event )
-    if ( 'ended' == event.phase ) then
+    if ( 'ended' == event.phase ) then    
         Runtime:removeEventListener( 'touch' , scene )
-
         audio.fade( { channel=0, time=1000, volume=0.0 } )
-
         composer.removeScene( 'game' )
         composer.gotoScene( 'menu', { effect = 'crossFade', time = 333 } )
     end

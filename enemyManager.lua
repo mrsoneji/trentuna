@@ -15,10 +15,7 @@ function EnemyManager:enterFrame()
         for i = EnemyManager.enemies.numChildren, 1, -1 do
             currentEnemy = EnemyManager.enemies[i]
 
-            for j = currentEnemy.gestures.numChildren, 1, -1 do
-                currentEnemy.gestures[j].x = currentEnemy.x
-                currentEnemy.gestures[j].y = currentEnemy.y - 65
-            end
+            currentEnemy.enterFrame()
 
             if (currentEnemy.status == "killed") then
                 table.remove(EnemyManager.remove, i)
