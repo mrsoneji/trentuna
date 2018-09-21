@@ -24,8 +24,8 @@ function scene:create( event )
 
     params = event.params
         
-    myData.settings.currentLevel = myData.settings.currentLevel + 1
-    utility.saveTable(myData.settings, "settings.json")
+    myData.currentLevel = myData.currentLevel + 1
+    utility.saveTable(myData, "settings.json")
     --
     -- setup a page background, really not that important though composer
     -- crashes out if there isn't a display object in the view.
@@ -44,7 +44,7 @@ function scene:create( event )
     sceneGroup:insert(wooHooText)
 
 
-    nextLevelText = display.newText("Next Level " .. myData.settings.currentLevel, display.contentCenterX, display.contentCenterY, native.systemFontBold, 48)
+    nextLevelText = display.newText("Next Level " .. myData.currentLevel, display.contentCenterX, display.contentCenterY, native.systemFontBold, 48)
     nextLevelText:setFillColor( 0 )
     sceneGroup:insert(nextLevelText)
 
