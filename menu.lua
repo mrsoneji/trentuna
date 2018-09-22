@@ -50,7 +50,7 @@ options:addEventListener('touch', OptionsEvent)
 local book = display.newImage(uiSettings.stickerbook)
 book.x = display.contentCenterX + 170
 book.y = display.contentCenterY + 70
-book.alpha = 0
+book.alpha = 1
 book:addEventListener('touch', BookEvent)
 
 local bookBlocked = display.newImage(uiSettings.stickerbookblocked)

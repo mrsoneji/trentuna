@@ -16,13 +16,13 @@ end
 
 local function onEffectsSwitchPress(event)
     local switch = event.target
-    myData.settings.effectsOn = switch.isOn
+    myData.effectsOn = switch.isOn
     utility.saveSettings(myData)
 end
 
 local function onMusicSwitchPress(event)
     local switch = event.target
-    myData.settings.musicOn = switch.isOn
+    myData.musicOn = switch.isOn
     utility.saveSettings(myData)
 end
 
@@ -56,7 +56,7 @@ effectsLabel.y = 130
 local effectsOnOffSwitch = widget.newSwitch({
     style = 'onOff',
     id = 'effectsOnOffSwitch',
-    initialSwitchState = myData.settings.effectsOn,
+    initialSwitchState = myData.effectsOn,
     onRelease = onEffectsSwitchPress
 })
 effectsOnOffSwitch.x = display.contentCenterX + 100
@@ -65,7 +65,7 @@ effectsOnOffSwitch.y = effectsLabel.y
 local musicOnOffSwitch = widget.newSwitch({
     style = 'onOff',
     id = 'musicOnOffSwitch',
-    initialSwitchState = myData.settings.musicOn,
+    initialSwitchState = myData.musicOn,
     onRelease = onMusicSwitchPress
 })
 musicOnOffSwitch.x = display.contentCenterX + 100

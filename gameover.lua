@@ -41,7 +41,7 @@ local function postToGameNetwork()
     gameNetwork.request("setHighScore", {
         localPlayerScore = {
             category = category, 
-            value = myData.settings.bestScore
+            value = myData.bestScore
         },
         listener = postScoreSubmit
     })
