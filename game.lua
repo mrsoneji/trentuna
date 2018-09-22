@@ -8,6 +8,7 @@ require('fondo')
 require('enemyManager')
 local ui = require('ui')
 local levelsSettings = require('levelsSettings')
+local beholder = require('beholder')
 
 local scene = composer.newScene()
 local gameState = 'wave'
@@ -16,6 +17,10 @@ local line
 local spawnTimer
 local sceneGroup
 local enemy
+
+local actualLevel
+local actualLevelData
+local actualWave = 1
 
 local function exit( event )
     if ( 'ended' == event.phase ) then    
@@ -27,7 +32,7 @@ local function exit( event )
 end
 
 function gestureLogic(gestureLogic)
-    gestureText.text = Gesture.GestureResult()        
+    gestureText.text = Gesture.GestureResult()
     EnemyManager:handleEnemyLogic(gestureLogic)
 end
 
@@ -59,6 +64,13 @@ function drawLine()
         line:setStrokeColor(255,255,0)
         line.strokeWidth=5
         sceneGroup:insert(line)
+    end
+end
+
+function enemiesKilled()
+    if (gameState == 'wait') then
+        actualWave = actualWave + 1
+        setState( { gameState = 'wave' } )
     end
 end
 
@@ -101,11 +113,33 @@ function scene:touch(event)
     end
 end
 
+function setState( state )
+    gameState = state.gameState
+    if ( state.gameState == 'wave' ) then
+        levelLabel.alpha = 0
+        waveLabel.alpha = 1
+
+        --hide wave label start
+        timer.performWithDelay( 2500, function() 
+            setState( { gameState = 'go' } )
+
+            actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
+            timer.resume(spawnTimer)
+        end )
+    end
+
+    if ( state.gameState == 'go' ) then
+        levelLabel.alpha = 0
+        waveLabel.alpha = 0
+    end
+end
+
 function scene:create( event )
     sceneGroup = self.view
-    local actualLevel = event.params.levelToPlay
-    local actualLevelData = levelsSettings.levels[actualLevel]
-    local actualWave = 1
+
+    actualLevel = event.params.levelToPlay
+    actualLevelData = levelsSettings.levels[actualLevel]
+
     audio.play(sonidos.themes.level[actualLevel], {loops = -1 , channel = sonidos.channels.background} )
     audio.setVolume( 0.5, { channel = sonidos.channels.background } )
 
@@ -119,13 +153,18 @@ function scene:create( event )
     hero = Hero:new()
     sceneGroup:insert(hero)
   
-    spawnTimer = timer.performWithDelay( 1000, function()
-        EnemyManager:new(actualLevelData, actualLevel, hero)
+    spawnTimer = timer.performWithDelay( 500, function()
+        enemy = EnemyManager:new(actualLevelData, actualWave, hero)
+        if (enemy == nil) then 
+            gameState = 'wait'
+
+            timer.pause(spawnTimer)
+        end
     end, -1)
     sceneGroup:insert(EnemyManager.enemies)
 
     hero:toFront()
-    spawnTimer._delay = math.random(1000, 10000)
+    spawnTimer._delay = math.random(500, 1000)
 
     exitButton = ui.exitButton()
     exitButton:addEventListener('touch', exit)
@@ -137,18 +176,15 @@ function scene:create( event )
     waveLabel = ui.waveLabel(actualWave)
     sceneGroup:insert(waveLabel)
 
+    -- Observer watching EnemyManager event when all enemies were killed.
+    -- After ENEMIES_KILLED event is dispatched from EnemyManager
+    -- enemiesKilled function is invoked.
+    beholder.observe("ENEMIES_KILLED", enemiesKilled)
+
     --hide level / show wave label
     timer.performWithDelay( 3000, function() 
-        levelLabel.alpha = 0
-        waveLabel.alpha = 1
+        setState( { gameState = 'wave', wave = 1 } )
     end )
-    --hide wave label start
-    timer.performWithDelay( 6000, function() 
-        waveLabel.alpha = 0 
-        gameState = 'go'
-        actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-    end )
-
 end
 
 function scene:show( event )

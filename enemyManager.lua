@@ -1,12 +1,13 @@
 EnemyManager = {}
 
+local beholder = require('beholder')
 require('enemy')
 
 EnemyManager.enemies = display.newGroup()  
 
 function EnemyManager:new(actualLevelData, actualWave, hero, enemies)
     enemy = Enemy:new(actualLevelData, actualWave, hero, enemies)
-    EnemyManager.enemies:insert(enemy)
+    if (enemy ~= nil) then EnemyManager.enemies:insert(enemy) end
     return enemy
 end
 
@@ -31,13 +32,18 @@ function EnemyManager:handleEnemyLogic(gesture)
             if (currentEnemy.deathSequence[1] == gesture) then
                 if (table.getn(currentEnemy.deathSequence) == 1) then
                     currentEnemy.killed()
+                    beholder.trigger("ENEMY_KILLED") 
                 else
                     EnemyManager.enemies[i] = currentEnemy.hitted()
                 end
             end
         end
     end
-
+    timer.performWithDelay( 1500, function() 
+        if (EnemyManager.enemies.numChildren == 0) then 
+            beholder.trigger("ENEMIES_KILLED") 
+        end
+    end)
 end
 
 function table.deepCopy(object)

@@ -118,7 +118,6 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
         timer.performWithDelay( 500, function() 
             transition.cancel(enemy.transitionId)
             if (killedEffect ~= nil) then
-                killedEffect:removeSelf()
                 for i = table.getn(enemy.gestureIcons), 1, -1 do
                     currentGesture = enemy.gestureIcons[i]
                     if (currentGesture ~= nil) then

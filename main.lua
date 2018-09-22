@@ -18,9 +18,7 @@ end
 --
 -- Load saved in settings
 --
-
 if (utility.loadTable('settings.json') == nil) then
-    print('NO HAY JSON')
 	myData = {
         settings = {
             effectsOn = true,
