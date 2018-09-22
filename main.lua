@@ -18,9 +18,7 @@ end
 --
 -- Load saved in settings
 --
-
 if (utility.loadTable('settings.json') == nil) then
-    print('NO HAY JSON')
 	myData = {
         settings = {
             effectsOn = true,
@@ -112,13 +110,13 @@ end
 --
 local function systemEvents(event)
     if event.type == 'applicationSuspend' then
-        utility.saveTable( myData.settings, 'settings.json' )
+        utility.saveTable( myData, 'settings.json' )
     elseif event.type == 'applicationResume' then
         -- 
         -- login to gameNetwork code here
         --
     elseif event.type == 'applicationExit' then
-        utility.saveTable( myData.settings, 'settings.json' )
+        utility.saveTable( myData, 'settings.json' )
     elseif event.type == 'applicationStart' then
         --
         -- Login to gameNetwork code here
