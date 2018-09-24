@@ -128,11 +128,11 @@ function string:split( inSplitPattern, outResults )
 end
 
 function M.loadSettings()
-    return M.loadTable("settings.json")
+    return M.loadTable("myData.json")
 end
 
 function M.saveSettings(myData)
-    M.saveTable(myData, "settings.json")
+    M.saveTable(myData, "myData.json")
 end
 
 

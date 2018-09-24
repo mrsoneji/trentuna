@@ -5,31 +5,31 @@ levelsSettings.mapItems = {
     {
         imagen = "images/mapa/bosque.png",
         imagenOscura = "images/mapa/bosqueOscuro.png",
-        x = 100, 
+        x = 150, 
         y = 90
+    },
+    {
+        imagen = "images/mapa/lago.png",
+        imagenOscura = "images/mapa/lagoOscuro.png",
+        x = 350,
+        y = 70
     },
     {
         imagen = "images/mapa/montana.png",
         imagenOscura = "images/mapa/montanaOscura.png",
         x = 150,
-        y = display.contentHeight - 70
-    },
-    {
-        imagen = "images/mapa/lago.png",
-        imagenOscura = "images/mapa/lagoOscuro.png",
-        x = 300,
-        y = 50
+        y = display.contentHeight - 100
     },
     {
         imagen = "images/mapa/bosquemuerto.png",
         imagenOscura = "images/mapa/bosquemuertoOscuro.png",
-        x = 350,
-        y = display.contentHeight - 50,
+        x = 320,
+        y = display.contentHeight - 70,
     },
     {
         imagen = "images/mapa/castillo.png",
         imagenOscura = "images/mapa/castilloOscuro.png",
-        x = display.contentWidth - 60,
+        x = display.contentWidth - 100,
         y = display.contentCenterY
     },
 }
