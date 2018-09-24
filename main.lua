@@ -18,33 +18,15 @@ end
 --
 -- Load saved in settings
 --
-if (utility.loadTable('settings.json') == nil) then
-	myData = {
-        settings = {
-            effectsOn = true,
-            musicOn = true
-        },
-        stats = {
-            levels = {
-                {
-                    completed = true
-                },
-                {
-                    completed = true
-                },
-                {
-                    completed = true
-                },
-                {
-                    completed = true
-                },
-                {
-                    completed = true
-                }
-            }
-        }
+
+local myData = utility.loadSettings()
+if (myData == nil) then
+    myData = {
+        effectsOn = true,
+        musicOn = true,
+        levelDone = { false, false, false, false, false }
     }
-	utility.saveTable(myData, 'settings.json')
+	utility.saveTable(myData, 'myData.json')
 end
 
 --
@@ -110,13 +92,12 @@ end
 --
 local function systemEvents(event)
     if event.type == 'applicationSuspend' then
-        utility.saveTable( myData, 'settings.json' )
     elseif event.type == 'applicationResume' then
         -- 
         -- login to gameNetwork code here
         --
     elseif event.type == 'applicationExit' then
-        utility.saveTable( myData, 'settings.json' )
+        -- ??
     elseif event.type == 'applicationStart' then
         --
         -- Login to gameNetwork code here

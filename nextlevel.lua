@@ -25,7 +25,7 @@ function scene:create( event )
     params = event.params
         
     myData.currentLevel = myData.currentLevel + 1
-    utility.saveTable(myData, "settings.json")
+    utility.saveTable(myData, "myData.json")
     --
     -- setup a page background, really not that important though composer
     -- crashes out if there isn't a display object in the view.

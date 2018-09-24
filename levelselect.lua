@@ -5,6 +5,8 @@ local widget = require( "widget" )
 local utility = require( "utility" )
 
 local params
+local myData = utility.loadSettings()
+
 
 local function goBack( event )
     if ( "ended" == event.phase ) then
@@ -33,7 +35,6 @@ end
 function scene:create( event )
     local sceneGroup = self.view
     params = event.params
-
     local mapa = display.newImage("images/mapa/mapa.png", display.contentCenterX, display.contentCenterY)
     mapa.width = display.contentWidth
     mapa.height = display.contentHeight
@@ -41,9 +42,12 @@ function scene:create( event )
     mapa:addEventListener("touch", goBack)
 
     for i = 1 , table.getn(levelsSettings.levels) do
-        local levelActive = 1
+        levelActive = true
+         if i > 1 then
+            levelActive = myData.levelDone[i - 1]
+        end 
         local item = levelsSettings.levels[i]
-        if levelActive == 1 then
+        if levelActive then
             _G["level_n_".. i] = widget.newButton
             {
                 defaultFile = item.mapItems.imagen,
@@ -54,10 +58,6 @@ function scene:create( event )
                 onRelease = goToLevel
             }
             sceneGroup:insert(_G["level_n_"..i])
---            if allLevels[i].done == 1 then
---                _G["done".. i] = display.newImage( "img/ui/done.png", ubicaciones[i].x, ubicaciones[i].y)
---                sceneGroup:insert(_G["done"..i])
---            end
         else 
             _G["level_n_".. i] = widget.newButton
             {
@@ -66,7 +66,14 @@ function scene:create( event )
                 x = item.mapItems.x,
                 y = item.mapItems.y
             }
-        end     
+            sceneGroup:insert(_G["level_n_"..i])
+        end
+
+        if myData.levelDone[i] then
+            _G["level_done_".. i] = display.newImage("images/mapa/hero.png", item.mapItems.x, item.mapItems.y)
+            sceneGroup:insert(_G["level_done_".. i])
+        end
+
     end
 
 end
