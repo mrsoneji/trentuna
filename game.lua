@@ -31,11 +31,6 @@ local function exit( event )
     end
 end
 
-function gestureLogic(gestureLogic)
-    gestureText.text = Gesture.GestureResult()
-    EnemyManager:handleEnemyLogic(gestureLogic)
-end
-
 function drawLine()
     if (line and #pointsTable > 2) then
         line:removeSelf()
@@ -64,14 +59,6 @@ function drawLine()
         line:setStrokeColor(255,255,0)
         line.strokeWidth=5
         sceneGroup:insert(line)
-    end
-end
-
-function enemiesKilled()
-    if (gameState == 'wait') then
-        EnemyManager:reset()
-        actualWave = actualWave + 1
-        setState( { gameState = 'wave' } )
     end
 end
 
@@ -114,28 +101,6 @@ function scene:touch(event)
     end
 end
 
-function setState( state )
-    gameState = state.gameState
-    if ( state.gameState == 'wave' ) then
-        levelLabel.alpha = 0
-        waveLabel = ui.waveLabel(actualWave)
-        waveLabel.alpha = 1
-
-        --hide wave label start
-        timer.performWithDelay( 2500, function() 
-            setState( { gameState = 'go' } )
-
-            actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-            timer.resume(spawnTimer)
-        end )
-    end
-
-    if ( state.gameState == 'go' ) then
-        levelLabel.alpha = 0
-        waveLabel.alpha = 0
-    end
-end
-
 function scene:create( event )
     sceneGroup = self.view
 
@@ -154,7 +119,43 @@ function scene:create( event )
 
     hero = Hero:new()
     sceneGroup:insert(hero)
-  
+
+    function setState( state )
+        gameState = state.gameState
+        if ( state.gameState == 'wave' ) then
+            levelLabel.alpha = 0
+            waveLabel = ui.waveLabel(actualWave)
+            waveLabel.alpha = 1
+            transition.scaleTo(waveLabel, { time = 250, transition=easing.inQuart, xScale = 1.2, yScale = 1.2})
+    
+            --hide wave label start
+            timer.performWithDelay( 1500, function() 
+                setState( { gameState = 'go' } )
+    
+                actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
+                timer.resume(spawnTimer)
+            end )
+        end
+    
+        if ( state.gameState == 'go' ) then
+            levelLabel.alpha = 0
+            waveLabel.alpha = 0
+        end
+    end
+
+    function enemiesKilled()
+        if (gameState == 'wait') then
+            EnemyManager:reset()
+            actualWave = actualWave + 1
+            setState( { gameState = 'wave' } )
+        end
+    end
+
+    function gestureLogic(gestureLogic)
+        gestureText.text = Gesture.GestureResult()
+        EnemyManager:handleEnemyLogic(gestureLogic)
+    end
+
     spawnTimer = timer.performWithDelay( 500, function()
         enemy = EnemyManager:new(actualLevelData, actualWave, hero)
         if (enemy == nil) then 
@@ -173,6 +174,8 @@ function scene:create( event )
     sceneGroup:insert( exitButton )
 
     levelLabel = ui.levelLabel(actualLevel)
+    transition.scaleTo(levelLabel, { time = 250, transition=easing.inQuart, xScale = 1.5, yScale = 1.5})
+
     sceneGroup:insert(levelLabel)
 
     waveLabel = ui.waveLabel(actualWave)
@@ -184,7 +187,7 @@ function scene:create( event )
     beholder.observe("ENEMIES_KILLED", enemiesKilled)
 
     --hide level / show wave label
-    timer.performWithDelay( 3000, function() 
+    timer.performWithDelay( 1500, function() 
         setState( { gameState = 'wave', wave = 1 } )
     end )
 end
