@@ -69,6 +69,7 @@ end
 
 function enemiesKilled()
     if (gameState == 'wait') then
+        EnemyManager:reset()
         actualWave = actualWave + 1
         setState( { gameState = 'wave' } )
     end
@@ -117,6 +118,7 @@ function setState( state )
     gameState = state.gameState
     if ( state.gameState == 'wave' ) then
         levelLabel.alpha = 0
+        waveLabel = ui.waveLabel(actualWave)
         waveLabel.alpha = 1
 
         --hide wave label start

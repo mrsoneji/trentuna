@@ -11,6 +11,10 @@ function EnemyManager:new(actualLevelData, actualWave, hero, enemies)
     return enemy
 end
 
+function EnemyManager:reset()
+    Enemy:reset()
+end
+
 function EnemyManager:enterFrame()
     if (EnemyManager.enemies ~= nil) then
         for i = EnemyManager.enemies.numChildren, 1, -1 do

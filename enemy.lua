@@ -21,20 +21,6 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     if actualEnemyInSecuence <= table.getn(actualLevelEnemySecuenceList) then
         enemyChosen = actualLevelEnemySecuenceList[actualEnemyInSecuence]
     else
-        if (enemies ~= nil) then
-            if (enemies.numChildren == 0) then
-                actualWave = actualWave + 1
-                waveLabel = ui.waveLabel(actualWave)
-                waveLabel.alpha = 1
-                gameState = 'wave'
-                actualEnemyInSecuence = 0
-                actualLevelEnemySecuenceList = actualLevelData.enemySecuences[actualWave]
-                timer.performWithDelay( 5000, function() 
-                    waveLabel.alpha = 0 
-                    gameState = 'go'
-                end )
-            end
-        end
         return nil
     end
     --animacion enemy
@@ -155,6 +141,10 @@ function Enemy:new(actualLevelData, actualWave, hero, enemies)
     end
 
     return enemy
+end
+
+function Enemy:reset() 
+    actualEnemyInSecuence = 0
 end
 
 function table.deepCopy(object)
